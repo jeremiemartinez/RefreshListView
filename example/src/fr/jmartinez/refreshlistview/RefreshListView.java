@@ -81,6 +81,15 @@ public class RefreshListView extends ListView {
 	}
 
 	@Override
+	public boolean performItemClick(View view, int position, long id) {
+		if (position == 0) {
+			return true;
+		} else {
+			return super.performItemClick(view, position - getHeaderViewsCount(), id);
+		}
+	}
+
+	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		switch (ev.getAction()) {
 		case MotionEvent.ACTION_DOWN:
@@ -131,15 +140,6 @@ public class RefreshListView extends ListView {
 
 	private int getHeightWithScrollResistance(float newY) {
 		return Math.max((int) (newY - currentY) / RESISTANCE, 0);
-	}
-
-	@Override
-	public boolean performItemClick(View view, int position, long id) {
-		if (position == 0) {
-			return true;
-		} else {
-			return super.performItemClick(view, position - 1, id);
-		}
 	}
 
 	private void changeHeaderHeight(int height) {
