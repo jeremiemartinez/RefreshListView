@@ -22,7 +22,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.view.animation.Transformation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -50,6 +52,7 @@ public class RefreshListView extends ListView {
 	private RelativeLayout header;
 	private ProgressBar progress;
 	private TextView comment;
+	private ImageView arrow;
 	private LayoutInflater inflater;
 
 	private boolean isRefreshing;
@@ -84,6 +87,7 @@ public class RefreshListView extends ListView {
 		inflater = LayoutInflater.from(context);
 		container = inflater.inflate(R.layout.layout_refreshlistview_header, null);
 		header = (RelativeLayout) container.findViewById(R.id.header);
+		arrow = (ImageView) container.findViewById(R.id.arrow);
 		progress = (ProgressBar) container.findViewById(R.id.progress);
 		comment = (TextView) container.findViewById(R.id.comment);
 
@@ -136,8 +140,8 @@ public class RefreshListView extends ListView {
 		case MotionEvent.ACTION_UP:
 			if (!isRefreshing) {
 				if (isAfterRefreshLimit) {
-					startRefreshing();
 					header.startAnimation(new ResizeHeaderAnimation(headerHeight));
+					startRefreshing();
 				} else {
 					header.startAnimation(new ResizeHeaderAnimation(0));
 				}
@@ -168,6 +172,8 @@ public class RefreshListView extends ListView {
 	 * Call to update UI when the refresh started.
 	 */
 	private void startRefreshing() {
+		arrow.clearAnimation();
+		arrow.setVisibility(View.INVISIBLE);
 		progress.setVisibility(View.VISIBLE);
 		comment.setText("Updating...");
 		isRefreshing = true;
@@ -181,8 +187,9 @@ public class RefreshListView extends ListView {
 	 * Call when refreshing task is done. Must be called by the developer.
 	 */
 	public void finishRefreshing() {
-		progress.setVisibility(View.INVISIBLE);
 		header.startAnimation(new ResizeHeaderAnimation(0));
+		progress.setVisibility(View.INVISIBLE);
+		arrow.setVisibility(View.VISIBLE);
 		isRefreshing = false;
 		invalidate();
 	}
@@ -210,6 +217,7 @@ public class RefreshListView extends ListView {
 				comment.setText("Release to refresh...");
 				isAfterRefreshLimit = true;
 			} else if (height < headerHeight) {
+				arrow.startAnimation(getRotationAnimation());
 				comment.setText("Pull down to refresh...");
 				isAfterRefreshLimit = false;
 			}
@@ -278,6 +286,13 @@ public class RefreshListView extends ListView {
 	 */
 	public interface OnRefreshListener {
 		public void onRefresh(RefreshListView listView);
+	}
+
+	private Animation getRotationAnimation() {
+		Animation animation = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		animation.setDuration(DURATION);
+		animation.setFillAfter(true);
+		return animation;
 	}
 
 	/**
