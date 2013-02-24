@@ -46,6 +46,9 @@ public class RefreshListView extends ListView {
 	private static final int RESISTANCE = 4;
 	private static final int HEADER_HEIGHT = 60;
 	private static final int DURATION = 300;
+	private static final String DEFAULT_UPDATING = "Updating...";
+	private static final String DEFAULT_RELEASE = "Release to refresh...";
+	private static final String DEFAULT_PULLDOWN = "Pull down to refresh...";
 
 	private OnRefreshListener refreshListener;
 	private View container;
@@ -175,7 +178,7 @@ public class RefreshListView extends ListView {
 		arrow.clearAnimation();
 		arrow.setVisibility(View.INVISIBLE);
 		progress.setVisibility(View.VISIBLE);
-		comment.setText(getResourceString(R.string.refreshlistview_updating, "Updating..."));
+		comment.setText(getResourceString(R.string.refreshlistview_updating, DEFAULT_UPDATING));
 		isRefreshing = true;
 
 		if (refreshListener != null) {
@@ -214,11 +217,11 @@ public class RefreshListView extends ListView {
 
 		if (!isRefreshing) {
 			if (height > headerHeight) {
-				comment.setText(getResourceString(R.string.refreshlistview_release, "Release to refresh..."));
+				comment.setText(getResourceString(R.string.refreshlistview_release, DEFAULT_RELEASE));
 				isAfterRefreshLimit = true;
 			} else if (height < headerHeight) {
 				arrow.startAnimation(getRotationAnimation());
-				comment.setText(getResourceString(R.string.refreshlistview_pulldown, "Pull down to refresh..."));
+				comment.setText(getResourceString(R.string.refreshlistview_pulldown, DEFAULT_PULLDOWN));
 				isAfterRefreshLimit = false;
 			}
 		}
