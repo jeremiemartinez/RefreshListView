@@ -16,7 +16,7 @@ import fr.jmartinez.refreshlistview.RefreshListView.OnRefreshListener;
 
 public class MainActivity extends Activity {
 
-	private static String TAG = "RefreshListView";
+	private static final String TAG = "RefreshListView";
 
 	private List<String> apis;
 	private RefreshListView list;
@@ -34,10 +34,12 @@ public class MainActivity extends Activity {
 		list = (RefreshListView) findViewById(R.id.list);
 		list.setAdapter(adapter);
 
+		// Add callback to RefreshListView
 		list.setRefreshListener(new OnRefreshListener() {
 
 			@Override
 			public void onRefresh(RefreshListView listView) {
+				// Task to do while refreshing
 				new DataRetriever().execute();
 
 			}
@@ -53,6 +55,7 @@ public class MainActivity extends Activity {
 		});
 	}
 
+	// Wait 5sec and add a new entry in adapter
 	private class DataRetriever extends AsyncTask<Void, Void, String> {
 
 		@Override
@@ -69,7 +72,9 @@ public class MainActivity extends Activity {
 		@Override
 		protected void onPostExecute(String newApi) {
 			apis.add(0, newApi);
+			// Notify adapter, data changed
 			adapter.notifyDataSetChanged();
+			// call on RefreshListView to hide header and notify the listview, refreshing is done
 			list.finishRefreshing();
 		}
 	}
