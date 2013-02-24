@@ -175,7 +175,7 @@ public class RefreshListView extends ListView {
 		arrow.clearAnimation();
 		arrow.setVisibility(View.INVISIBLE);
 		progress.setVisibility(View.VISIBLE);
-		comment.setText("Updating...");
+		comment.setText(getResourceString(R.string.refreshlistview_updating, "Updating..."));
 		isRefreshing = true;
 
 		if (refreshListener != null) {
@@ -214,11 +214,11 @@ public class RefreshListView extends ListView {
 
 		if (!isRefreshing) {
 			if (height > headerHeight) {
-				comment.setText("Release to refresh...");
+				comment.setText(getResourceString(R.string.refreshlistview_release, "Release to refresh..."));
 				isAfterRefreshLimit = true;
 			} else if (height < headerHeight) {
 				arrow.startAnimation(getRotationAnimation());
-				comment.setText("Pull down to refresh...");
+				comment.setText(getResourceString(R.string.refreshlistview_pulldown, "Pull down to refresh..."));
 				isAfterRefreshLimit = false;
 			}
 		}
@@ -272,6 +272,13 @@ public class RefreshListView extends ListView {
 			header.setVisibility(View.VISIBLE);
 		}
 	}
+
+	private String getResourceString(int id, String defaultString) {
+		String resourceString = getContext().getString(id);
+		if (resourceString == null)
+			return defaultString;
+		else
+			return resourceString;
 
 	}
 
