@@ -273,8 +273,6 @@ public class RefreshListView extends ListView {
 		}
 	}
 
-	public OnRefreshListener getRefreshListener() {
-		return refreshListener;
 	}
 
 	public void setRefreshListener(OnRefreshListener listener) {
