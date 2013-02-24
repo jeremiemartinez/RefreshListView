@@ -29,6 +29,16 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+/**
+ * @author jmartinez
+ * 
+ *         Simple Android ListView that enables pull to refresh as Twitter or Facebook apps
+ *         ListView. Developers must implement OnRefreshListener interface and set it to the list.
+ *         They also have to call finishRefreshing when their task is done. See <a
+ *         href="https://github.com/jeremiemartinez/RefreshListView">Project Site</a> for more
+ *         information.
+ * 
+ */
 public class RefreshListView extends ListView {
 
 	private static final int RESISTANCE = 4;
@@ -63,6 +73,12 @@ public class RefreshListView extends ListView {
 		init(context);
 	}
 
+	/**
+	 * initializing method. Call in constructors to set up the headers.
+	 * 
+	 * @param context
+	 *            activity context, got by constructors
+	 */
 	private void init(Context context) {
 		isRefreshing = false;
 		inflater = LayoutInflater.from(context);
@@ -80,6 +96,11 @@ public class RefreshListView extends ListView {
 		changeHeaderHeight(0);
 	}
 
+	/**
+	 * Call to perform item click. Reset the position without the header
+	 * 
+	 * @see android.widget.AbsListView#performItemClick(android.view.View, int, long)
+	 */
 	@Override
 	public boolean performItemClick(View view, int position, long id) {
 		if (position == 0) {
@@ -89,6 +110,11 @@ public class RefreshListView extends ListView {
 		}
 	}
 
+	/**
+	 * Set up first touch to later calculations.
+	 * 
+	 * @see android.widget.AbsListView#onInterceptTouchEvent(android.view.MotionEvent )
+	 */
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		switch (ev.getAction()) {
@@ -99,6 +125,11 @@ public class RefreshListView extends ListView {
 		return super.onInterceptTouchEvent(ev);
 	}
 
+	/**
+	 * Handle what to do when the user release the touch.
+	 * 
+	 * @see android.widget.AbsListView#onTouchEvent(android.view.MotionEvent)
+	 */
 	@Override
 	public boolean onTouchEvent(final MotionEvent ev) {
 		switch (ev.getAction()) {
@@ -106,18 +137,23 @@ public class RefreshListView extends ListView {
 			if (!isRefreshing) {
 				if (isAfterRefreshLimit) {
 					startRefreshing();
-					header.startAnimation(new ResizeHeaderAnimation(container.getHeight(), headerHeight));
+					header.startAnimation(new ResizeHeaderAnimation(headerHeight));
 				} else {
-					header.startAnimation(new ResizeHeaderAnimation(container.getHeight(), 0));
+					header.startAnimation(new ResizeHeaderAnimation(0));
 				}
 			} else {
-				header.startAnimation(new ResizeHeaderAnimation(container.getHeight(), headerHeight));
+				header.startAnimation(new ResizeHeaderAnimation(headerHeight));
 			}
 			break;
 		}
 		return super.onTouchEvent(ev);
 	}
 
+	/**
+	 * Used to show header when scrolling down.
+	 * 
+	 * @see android.view.ViewGroup#dispatchTouchEvent(android.view.MotionEvent)
+	 */
 	@Override
 	public boolean dispatchTouchEvent(final MotionEvent ev) {
 		if (ev.getAction() == MotionEvent.ACTION_MOVE && getFirstVisiblePosition() == 0) {
@@ -128,20 +164,36 @@ public class RefreshListView extends ListView {
 		return super.dispatchTouchEvent(ev);
 	}
 
-	private boolean isAllowedToShowHeader(float newY) {
-		return isScrollingEnough(newY) && (!isRefreshing || (isRefreshing && (newY - currentY) > 0));
+	/**
+	 * Call to update UI when the refresh started.
+	 */
+	private void startRefreshing() {
+		progress.setVisibility(View.VISIBLE);
+		comment.setText("Updating...");
+		isRefreshing = true;
+
+		if (refreshListener != null) {
+			refreshListener.onRefresh(this);
+		}
 	}
 
-	private boolean isScrollingEnough(float newY) {
-		float deltaY = Math.abs(currentY - newY);
-		ViewConfiguration config = ViewConfiguration.get(getContext());
-		return deltaY > config.getScaledTouchSlop();
+	/**
+	 * Call when refreshing task is done. Must be called by the developer.
+	 */
+	public void finishRefreshing() {
+		progress.setVisibility(View.INVISIBLE);
+		header.startAnimation(new ResizeHeaderAnimation(0));
+		isRefreshing = false;
+		invalidate();
 	}
 
-	private int getHeightWithScrollResistance(float newY) {
-		return Math.max((int) (newY - currentY) / RESISTANCE, 0);
-	}
-
+	/**
+	 * Change the header height while scrolling down by making it visible and increasing the
+	 * topMargin of the header.
+	 * 
+	 * @param height
+	 *            the height of the header
+	 */
 	private void changeHeaderHeight(int height) {
 		hideOrShowHeader(height);
 
@@ -164,29 +216,53 @@ public class RefreshListView extends ListView {
 		}
 	}
 
+	/**
+	 * Check whether or not the header should be shown.
+	 * 
+	 * @param newY
+	 *            just acquired Y event
+	 * @return true if it is, false otherwise
+	 */
+	private boolean isAllowedToShowHeader(float newY) {
+		return isScrollingEnough(newY) && (!isRefreshing || (isRefreshing && (newY - currentY) > 0));
+	}
+
+	/**
+	 * Check if the scroll is enough to be taken into acccount.
+	 * 
+	 * @param newY
+	 *            just acquired Y event
+	 * @return true if it is, false otherwise
+	 */
+	private boolean isScrollingEnough(float newY) {
+		float deltaY = Math.abs(currentY - newY);
+		ViewConfiguration config = ViewConfiguration.get(getContext());
+		return deltaY > config.getScaledTouchSlop();
+	}
+
+	/**
+	 * Calculate height header when scrolling down.
+	 * 
+	 * @param newY
+	 *            just acquired Y event
+	 * @return the height of the header to set
+	 */
+	private int getHeightWithScrollResistance(float newY) {
+		return Math.max((int) (newY - currentY) / RESISTANCE, 0);
+	}
+
+	/**
+	 * Hide or show the header according to its height.
+	 * 
+	 * @param height
+	 *            current height of the header
+	 */
 	private void hideOrShowHeader(int height) {
 		if (height <= 0) {
 			header.setVisibility(View.GONE);
 		} else {
 			header.setVisibility(View.VISIBLE);
 		}
-	}
-
-	private void startRefreshing() {
-		progress.setVisibility(View.VISIBLE);
-		comment.setText("Updating...");
-		isRefreshing = true;
-
-		if (refreshListener != null) {
-			refreshListener.onRefresh(this);
-		}
-	}
-
-	public void finishRefreshing() {
-		progress.setVisibility(View.INVISIBLE);
-		header.startAnimation(new ResizeHeaderAnimation(container.getHeight(), 0));
-		isRefreshing = false;
-		invalidate();
 	}
 
 	public OnRefreshListener getRefreshListener() {
@@ -197,23 +273,33 @@ public class RefreshListView extends ListView {
 		this.refreshListener = listener;
 	}
 
+	/**
+	 * Callback. Call when user asks to refresh the list. Required to be implemented by developer.
+	 */
 	public interface OnRefreshListener {
 		public void onRefresh(RefreshListView listView);
 	}
 
+	/**
+	 * Animation to resize the header's height
+	 */
 	public class ResizeHeaderAnimation extends Animation {
 		private int toHeight;
-		private int fromHeight;
 
-		public ResizeHeaderAnimation(int fromHeight, int toHeight) {
+		public ResizeHeaderAnimation(int toHeight) {
 			this.toHeight = toHeight;
-			this.fromHeight = fromHeight;
 			setDuration(DURATION);
 		}
 
+		/**
+		 * Animation core, animate the height of the header to a specific value.
+		 * 
+		 * @see android.view.animation.Animation#applyTransformation(float,
+		 *      android.view.animation.Transformation)
+		 */
 		@Override
 		protected void applyTransformation(float interpolatedTime, Transformation t) {
-			float height = (toHeight - fromHeight) * interpolatedTime + fromHeight;
+			float height = (toHeight - container.getHeight()) * interpolatedTime + container.getHeight();
 			LayoutParams lp = (LayoutParams) container.getLayoutParams();
 			LinearLayout.LayoutParams headerlp = (LinearLayout.LayoutParams) header.getLayoutParams();
 			headerlp.topMargin = (int) height - headerHeight;
@@ -222,6 +308,13 @@ public class RefreshListView extends ListView {
 			container.requestLayout();
 		}
 
+		/**
+		 * Used at the end of the animation to hide completely the header if it's required (toHeight
+		 * == 0).
+		 * 
+		 * @see android.view.animation.Animation#getTransformation(long,
+		 *      android.view.animation.Transformation)
+		 */
 		@Override
 		public boolean getTransformation(long currentTime, Transformation outTransformation) {
 			hideOrShowHeader(toHeight);
