@@ -15,6 +15,9 @@
  */
 package fr.jmartinez.refreshlistview;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -49,6 +52,7 @@ public class RefreshListView extends ListView {
 	private static final String DEFAULT_UPDATING = "Updating...";
 	private static final String DEFAULT_RELEASE = "Release to refresh...";
 	private static final String DEFAULT_PULLDOWN = "Pull down to refresh...";
+	private static final String NO_UPDATE = "No past update";
 
 	private OnRefreshListener refreshListener;
 	private View container;
@@ -56,6 +60,7 @@ public class RefreshListView extends ListView {
 	private ProgressBar progress;
 	private TextView comment;
 	private ImageView arrow;
+	private TextView date;
 	private LayoutInflater inflater;
 
 	private boolean isRefreshing;
@@ -63,6 +68,10 @@ public class RefreshListView extends ListView {
 	private float currentY;
 
 	private int headerHeight;
+
+	private boolean enabledDate;
+	private Date lastUpdateDate;
+	private DateFormat formatter;
 
 	public RefreshListView(Context context) {
 		super(context);
@@ -86,12 +95,14 @@ public class RefreshListView extends ListView {
 	 *            activity context, got by constructors
 	 */
 	private void init(Context context) {
+		formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
 		isRefreshing = false;
 		inflater = LayoutInflater.from(context);
 		container = inflater.inflate(R.layout.layout_refreshlistview_header, null);
 		header = (RelativeLayout) container.findViewById(R.id.header);
 		arrow = (ImageView) container.findViewById(R.id.arrow);
 		progress = (ProgressBar) container.findViewById(R.id.progress);
+		date = (TextView) container.findViewById(R.id.date);
 		comment = (TextView) container.findViewById(R.id.comment);
 
 		container.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
@@ -190,9 +201,24 @@ public class RefreshListView extends ListView {
 	 * Call when refreshing task is done. Must be called by the developer.
 	 */
 	public void finishRefreshing() {
+		finishRefreshing(null);
+	}
+
+	/**
+	 * Call when refreshing task is done. Must be called by the developer.
+	 * 
+	 * @param updateDate
+	 *            allow developer to set the last updateDate
+	 */
+	public void finishRefreshing(Date updateDate) {
 		header.startAnimation(new ResizeHeaderAnimation(0));
 		progress.setVisibility(View.INVISIBLE);
 		arrow.setVisibility(View.VISIBLE);
+		if (updateDate == null)
+			lastUpdateDate = new Date();
+		else
+			lastUpdateDate = updateDate;
+		date.setText(getFormattedDate(lastUpdateDate));
 		isRefreshing = false;
 		invalidate();
 	}
@@ -282,7 +308,52 @@ public class RefreshListView extends ListView {
 			return defaultString;
 		else
 			return resourceString;
+	}
 
+	/**
+	 * Getter to know if date is enabled
+	 * 
+	 * @return true if date is enabled, false otherwise
+	 */
+	public boolean isEnabledDate() {
+		return enabledDate;
+	}
+
+	/**
+	 * Set enabled date, the first date to show will just be "No past update".
+	 * 
+	 * @param enabledDate
+	 */
+	public void setEnabledDate(boolean enabledDate) {
+		setEnabledDate(enabledDate, null);
+	}
+
+	public void setEnabledDate(boolean enabledDate, Date firstDate) {
+		this.enabledDate = enabledDate;
+		lastUpdateDate = firstDate;
+		if (enabledDate) {
+			date.setVisibility(View.VISIBLE);
+			if (firstDate != null) {
+				date.setText(getFormattedDate(firstDate));
+			} else {
+				date.setText(NO_UPDATE);
+			}
+		} else {
+			date.setVisibility(View.GONE);
+		}
+	}
+
+	/**
+	 * Getter for last update date.
+	 * 
+	 * @return the last update date or null is it has never been updated yet.
+	 */
+	public Date getLastUpdateDate() {
+		return lastUpdateDate;
+	}
+
+	private String getFormattedDate(Date date) {
+		return formatter.format(date);
 	}
 
 	public void setRefreshListener(OnRefreshListener listener) {

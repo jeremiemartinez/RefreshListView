@@ -1,6 +1,7 @@
 package fr.jmartinez.refreshlistview;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -33,7 +34,8 @@ public class MainActivity extends Activity {
 
 		list = (RefreshListView) findViewById(R.id.list);
 		list.setAdapter(adapter);
-
+		// Enable date in header
+		list.setEnabledDate(true, new Date());
 		// Add callback to RefreshListView
 		list.setRefreshListener(new OnRefreshListener() {
 
