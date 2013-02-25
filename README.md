@@ -73,7 +73,7 @@ If you need more technical information, you can refer to the javadoc I wrote in 
   }
 ```
     
-#### Enable and use Update date/time
+#### Enable and use Update date/time:
     
 Another feature implemented in this project, is to allow user to visualize the last update date and time. To do so, just use the following method:
 ``` java
@@ -88,7 +88,7 @@ Finally, you can also get the last update date thanks to the getter:
   Date lastUpdate = list.getLastUpdateDate();
 ```
     
-#### String resources and Localization
+#### String resources and Localization:
     
 If you want to change the default strings in the header, just add the a new [strings.xml file](/RefreshListView-master/library/res/values/strings.xml)
 and add the following resources:
@@ -117,7 +117,7 @@ Finally add the strings as before:
     </resources>
 ```
     
-#### Simple error handling
+#### Simple error handling:
     
 To handle error in task, this project provides a simple method that will display a toast in case something went wrong in refresh task:
 ``` java
