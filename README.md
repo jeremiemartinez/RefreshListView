@@ -8,7 +8,7 @@ Simple Android ListView that enables pull to refresh as Twitter or Facebook apps
 
 Please check out the [example project](https://github.com/jeremiemartinez/RefreshListView/tree/master/example).
 
-If you need more technical information, you can refer to the javadoc I wrote in the [RefreshListView class](https://github.com/jeremiemartinez/RefreshListView/tree/master/library/src/fr/jmartinez/refreshlistview).
+If you need more technical information, you can refer to the javadoc I wrote in the [RefreshListView class](https://github.com/jeremiemartinez/RefreshListView/tree/master/library/src/fr/jmartinez/refreshlistview/RefreshListView.java).
 
 ### How to integrate it ?
 
