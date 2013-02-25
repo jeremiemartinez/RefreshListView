@@ -73,9 +73,14 @@ public class MainActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(String newApi) {
-			apis.add(0, newApi);
-			// Notify adapter, data changed
-			adapter.notifyDataSetChanged();
+			if (newApi != null) {
+				apis.add(0, newApi);
+				// Notify adapter, data changed
+				adapter.notifyDataSetChanged();
+			} else {
+				// Error case
+				list.errorInRefresh("Something went wrong.");
+			}
 			// call on RefreshListView to hide header and notify the listview, refreshing is done
 			list.finishRefreshing();
 		}

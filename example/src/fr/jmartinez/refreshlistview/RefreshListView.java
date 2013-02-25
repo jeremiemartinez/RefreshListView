@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * @author jmartinez
@@ -416,4 +417,13 @@ public class RefreshListView extends ListView {
 		}
 	}
 
+	/**
+	 * Display a toast when there is an error in refresh task
+	 * 
+	 * @param errorMessage
+	 *            error message to display
+	 */
+	public void errorInRefresh(String errorMessage) {
+		Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+	}
 }
