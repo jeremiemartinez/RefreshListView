@@ -92,7 +92,7 @@ Finally, you can also get the last update date thanks to the getter:
     
 #### String resources and Localization:
     
-If you want to change the default strings in the header, just add the a new [strings.xml file](/RefreshListView-master/library/res/values/strings.xml)
+If you want to change the default strings in the header, just add the a new [strings.xml file](https://github.com/jeremiemartinez/RefreshListView/blob/master/library/res/values/strings.xml)
 and add the following resources:
 ``` xml
   <?xml version="1.0" encoding="utf-8"?>
