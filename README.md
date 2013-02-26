@@ -15,9 +15,9 @@ If you need more technical information, you can refer to the javadoc I wrote in 
 1. Download the project at [Github Project](https://github.com/jeremiemartinez/RefreshListView/archive/master.zip)
 2. Unzip the project wherever you want
 3. At least, copy and past in your project the following files:
-  * [/RefreshListView-master/library/res/drawable/refreshlistview_arrow.png](/RefreshListView-master/library/res/drawable/refreshlistview_arrow.png) to your drawable folder
-  * [/RefreshListView-master/library/res/layout/layout_refreshlistview_header.xml](/RefreshListView-master/library/res/layout/layout_refreshlistview_header.xml) to your layout folder
-  * [/RefreshListView-master/library/src/fr/jmartinez/refreshlistview/RefreshListView.java](/RefreshListView-master/library/src/fr/jmartinez/refreshlistview/RefreshListView.java) to your source file
+  * [/RefreshListView-master/library/res/drawable/refreshlistview_arrow.png](https://github.com/jeremiemartinez/RefreshListView/blob/master/library/res/drawable/refreshlistview_arrow.png) to your drawable folder
+  * [/RefreshListView-master/library/res/layout/layout_refreshlistview_header.xml](https://github.com/jeremiemartinez/RefreshListView/blob/master/library/res/layout/layout_refreshlistview_header.xml) to your layout folder
+  * [/RefreshListView-master/library/src/fr/jmartinez/refreshlistview/RefreshListView.java](https://github.com/jeremiemartinez/RefreshListView/blob/master/library/src/fr/jmartinez/refreshlistview/RefreshListView.java) to your source file
 4. Don't forget to update the package in the RefreshListView file to allow Eclipse to compile it
 
 ### How to use it ?
