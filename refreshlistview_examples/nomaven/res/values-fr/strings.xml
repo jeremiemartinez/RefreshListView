@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="refreshlistview_updating">Mise à jour…</string>
+    <string name="refreshlistview_release">Relâcher pour actualiser…</string>
+    <string name="refreshlistview_pulldown">Tirer pour actualiser…</string>
+
+</resources>
