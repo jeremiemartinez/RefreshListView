@@ -40,14 +40,14 @@ import android.widget.Toast;
  * 
  *         Simple Android ListView that enables pull to refresh as Twitter or Facebook apps
  *         ListView. Developers must implement OnRefreshListener interface and set it to the list.
- *         They also have to call finishRefreshing when their task is done. See <a
- *         href="https://github.com/jeremiemartinez/RefreshListView">Project Site</a> for more
+ *         They also have to call finishRefreshing when their task is done. See 
+ *         <a href="https://github.com/jeremiemartinez/RefreshListView">Project Site</a> for more
  *         information.
  * 
  */
 public class RefreshListView extends ListView {
 
-	private static final int RESISTANCE = 4;
+	private static final int RESISTANCE = 3;
 	private static final int HEADER_HEIGHT = 60;
 	private static final int DURATION = 300;
 	private static final String DEFAULT_UPDATING = "Updating...";
@@ -64,8 +64,6 @@ public class RefreshListView extends ListView {
 	private TextView date;
 	private LayoutInflater inflater;
 
-	private boolean isRefreshing;
-	private boolean isAfterRefreshLimit;
 	private float currentY;
 
 	private int headerHeight;
@@ -73,6 +71,16 @@ public class RefreshListView extends ListView {
 	private boolean enabledDate;
 	private Date lastUpdateDate;
 	private DateFormat formatter;
+
+	private State currentState;
+
+	private enum State {
+		PULLDOWN, RELEASE, UPDATING;
+	}
+
+	private enum Rotation {
+		CLOCKWISE, ANTICLOCKWISE;
+	}
 
 	public RefreshListView(Context context) {
 		super(context);
@@ -97,7 +105,6 @@ public class RefreshListView extends ListView {
 	 */
 	private void init(Context context) {
 		formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
-		isRefreshing = false;
 		inflater = LayoutInflater.from(context);
 		container = inflater.inflate(R.layout.layout_refreshlistview_header, null);
 		header = (RelativeLayout) container.findViewById(R.id.header);
@@ -113,6 +120,9 @@ public class RefreshListView extends ListView {
 
 		headerHeight = (int) (HEADER_HEIGHT * getContext().getResources().getDisplayMetrics().density);
 		changeHeaderHeight(0);
+
+		comment.setText(getResourceString(R.string.refreshlistview_pulldown, DEFAULT_PULLDOWN));
+		currentState = State.PULLDOWN;
 	}
 
 	/**
@@ -153,8 +163,8 @@ public class RefreshListView extends ListView {
 	public boolean onTouchEvent(final MotionEvent ev) {
 		switch (ev.getAction()) {
 		case MotionEvent.ACTION_UP:
-			if (!isRefreshing) {
-				if (isAfterRefreshLimit) {
+			if (currentState != State.UPDATING) {
+				if (currentState == State.RELEASE) {
 					header.startAnimation(new ResizeHeaderAnimation(headerHeight));
 					startRefreshing();
 				} else {
@@ -163,9 +173,10 @@ public class RefreshListView extends ListView {
 			} else {
 				header.startAnimation(new ResizeHeaderAnimation(headerHeight));
 			}
-			break;
+		case MotionEvent.ACTION_MOVE:
+			ev.setAction(MotionEvent.ACTION_CANCEL);
 		}
-		return super.onTouchEvent(ev);
+		return true;
 	}
 
 	/**
@@ -191,11 +202,12 @@ public class RefreshListView extends ListView {
 		arrow.setVisibility(View.INVISIBLE);
 		progress.setVisibility(View.VISIBLE);
 		comment.setText(getResourceString(R.string.refreshlistview_updating, DEFAULT_UPDATING));
-		isRefreshing = true;
 
 		if (refreshListener != null) {
 			refreshListener.onRefresh(this);
 		}
+
+		currentState = State.UPDATING;
 	}
 
 	/**
@@ -220,12 +232,13 @@ public class RefreshListView extends ListView {
 		else
 			lastUpdateDate = updateDate;
 		date.setText(getFormattedDate(lastUpdateDate));
-		isRefreshing = false;
+		comment.setText(getResourceString(R.string.refreshlistview_pulldown, DEFAULT_PULLDOWN));
+		currentState = State.PULLDOWN;
 		invalidate();
 	}
 
 	/**
-	 * Change the header height while scrolling down by making it visible and increasing the
+	 * Change the header height while scrolling down by making it visible and increasing
 	 * topMargin of the header.
 	 * 
 	 * @param height
@@ -242,14 +255,15 @@ public class RefreshListView extends ListView {
 		headerLayoutParams.topMargin = height - headerHeight;
 		header.setLayoutParams(headerLayoutParams);
 
-		if (!isRefreshing) {
-			if (height > headerHeight) {
+		if (currentState != State.UPDATING) {
+			if (height > headerHeight && currentState == State.PULLDOWN) {
+				arrow.startAnimation(getRotationAnimation(Rotation.ANTICLOCKWISE));
 				comment.setText(getResourceString(R.string.refreshlistview_release, DEFAULT_RELEASE));
-				isAfterRefreshLimit = true;
-			} else if (height < headerHeight) {
-				arrow.startAnimation(getRotationAnimation());
+				currentState = State.RELEASE;
+			} else if (height < headerHeight && currentState == State.RELEASE) {
+				arrow.startAnimation(getRotationAnimation(Rotation.CLOCKWISE));
 				comment.setText(getResourceString(R.string.refreshlistview_pulldown, DEFAULT_PULLDOWN));
-				isAfterRefreshLimit = false;
+				currentState = State.PULLDOWN;
 			}
 		}
 	}
@@ -262,7 +276,7 @@ public class RefreshListView extends ListView {
 	 * @return true if it is, false otherwise
 	 */
 	private boolean isAllowedToShowHeader(float newY) {
-		return isScrollingEnough(newY) && (!isRefreshing || (isRefreshing && (newY - currentY) > 0));
+		return isScrollingEnough(newY) && (currentState != State.UPDATING || (currentState == State.UPDATING && (newY - currentY) > 0));
 	}
 
 	/**
@@ -362,14 +376,21 @@ public class RefreshListView extends ListView {
 	}
 
 	/**
-	 * Callback. Call when user asks to refresh the list. Required to be implemented by developer.
+	 * Callback. Call when user asks to refresh the list. Required to be implemented 
+	 * by developer.
 	 */
 	public interface OnRefreshListener {
 		public void onRefresh(RefreshListView listView);
 	}
 
-	private Animation getRotationAnimation() {
-		Animation animation = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+	private Animation getRotationAnimation(Rotation rotation) {
+		int fromAngle = 0;
+		int toAngle = 0;
+		if (rotation == Rotation.ANTICLOCKWISE)
+			toAngle = 180;
+		else
+			fromAngle = 180;
+		Animation animation = new RotateAnimation(fromAngle, toAngle, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 		animation.setDuration(DURATION);
 		animation.setFillAfter(true);
 		return animation;
@@ -389,8 +410,8 @@ public class RefreshListView extends ListView {
 		/**
 		 * Animation core, animate the height of the header to a specific value.
 		 * 
-		 * @see android.view.animation.Animation#applyTransformation(float,
-		 *      android.view.animation.Transformation)
+		 * @see android.view.animation.Animation#applyTransformation(float, 
+		 * 			android.view.animation.Transformation)
 		 */
 		@Override
 		protected void applyTransformation(float interpolatedTime, Transformation t) {
@@ -404,11 +425,10 @@ public class RefreshListView extends ListView {
 		}
 
 		/**
-		 * Used at the end of the animation to hide completely the header if it's required (toHeight
-		 * == 0).
+		 * Used at the end of the animation to hide completely the header if it's required (toHeight == 0).
 		 * 
-		 * @see android.view.animation.Animation#getTransformation(long,
-		 *      android.view.animation.Transformation)
+		 * @see android.view.animation.Animation#getTransformation(long, 
+		 * 			android.view.animation.Transformation)
 		 */
 		@Override
 		public boolean getTransformation(long currentTime, Transformation outTransformation) {
