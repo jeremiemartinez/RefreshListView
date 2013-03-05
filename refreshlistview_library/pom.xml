@@ -24,7 +24,7 @@
 		<connection>scm:git:git@github.com:jeremiemartinez/RefreshListView.git</connection>
 		<developerConnection>scm:git:git@github.com:jeremiemartinez/RefreshListView.git</developerConnection>
 	</scm>
-	
+
 	<developers>
 		<developer>
 			<name>Jeremie Martinez</name>
@@ -46,10 +46,11 @@
 		<system>GitHub Issues</system>
 		<url>https://github.com/jeremiemartinez/RefreshListView/issues</url>
 	</issueManagement>
-	
+
 	<properties>
-   	    <android.plugin.version>3.5.1</android.plugin.version>
-	    <android.version>4.1.1.4</android.version>
+		<android.plugin.version>3.5.1</android.plugin.version>
+		<android.version>4.1.1.4</android.version>
+		<release.plugin.version>2.3.2</release.plugin.version>
 	</properties>
 
 	<dependencies>
@@ -68,6 +69,22 @@
 				<artifactId>android-maven-plugin</artifactId>
 				<version>${android.plugin.version}</version>
 				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${release.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>perform</goal>
+						</goals>
+						<configuration>
+							<pomFileName>refreshlistview_library/pom.xml</pomFileName>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
