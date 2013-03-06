@@ -31,7 +31,7 @@
 			<groupId>com.github.jeremiemartinez</groupId>
 			<artifactId>refreshlistview</artifactId>
 			<type>apklib</type>
-			<version>1.0</version>
+			<version>1.1</version>
 		</dependency>
 	</dependencies>
 
