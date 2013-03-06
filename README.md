@@ -6,19 +6,27 @@ Simple Android ListView that enables pull to refresh as Twitter or Facebook apps
 
 ## Usage
 
-Please check out the [example project](https://github.com/jeremiemartinez/RefreshListView/tree/master/example).
+Please check out the [example project](https://github.com/jeremiemartinez/RefreshListView/tree/master/refreshlistview_examples).
 
-If you need more technical information, you can refer to the javadoc I wrote in the [RefreshListView class](https://github.com/jeremiemartinez/RefreshListView/tree/master/library/src/fr/jmartinez/refreshlistview/RefreshListView.java).
+If you need more technical information, you can refer to the javadoc I wrote in the [RefreshListView class](https://github.com/jeremiemartinez/RefreshListView/tree/master/refreshlistview_library/src/com/github/jeremiemartinez/refreshlistview/RefreshListView.java).
 
 ### How to integrate it ?
 
-1. Download the project at [Github Project](https://github.com/jeremiemartinez/RefreshListView/archive/master.zip)
-2. Unzip the project wherever you want
-3. At least, copy and past in your project the following files:
-  * [/RefreshListView-master/library/res/drawable/refreshlistview_arrow.png](https://github.com/jeremiemartinez/RefreshListView/blob/master/library/res/drawable/refreshlistview_arrow.png) to your drawable folder
-  * [/RefreshListView-master/library/res/layout/layout_refreshlistview_header.xml](https://github.com/jeremiemartinez/RefreshListView/blob/master/library/res/layout/layout_refreshlistview_header.xml) to your layout folder
-  * [/RefreshListView-master/library/src/fr/jmartinez/refreshlistview/RefreshListView.java](https://github.com/jeremiemartinez/RefreshListView/blob/master/library/src/fr/jmartinez/refreshlistview/RefreshListView.java) to your source file
-4. Don't forget to update the package in the RefreshListView file to allow Eclipse to compile it
+#### Eclipse
+Since RefreshListView is an apklib, you have to [download it](https://github.com/jeremiemartinez/RefreshListView/archive/master.zip) and import it in your Eclipse.
+
+Then you need to go to Properties > Android in your project and add RefreshListView as a Library.
+
+#### Maven
+
+``` xml
+<dependency>
+   <groupId>com.github.jeremiemartinez</groupId>
+   <artifactId>refreshlistview</artifactId>
+   <type>apklib</type>
+   <version>1.1</version>
+</dependency>
+```
 
 ### How to use it ?
 
@@ -26,7 +34,7 @@ If you need more technical information, you can refer to the javadoc I wrote in 
 
 ``` xml
   <!-- Replace with your package name instead -->
-  <fr.jmartinez.refreshlistview.RefreshListView
+  <com.github.jeremiemartinez.refreshlistview.RefreshListView
   android:id="@+id/list"
   android:layout_height="match_parent"
   android:layout_width="match_parent" />
@@ -92,8 +100,7 @@ Finally, you can also get the last update date thanks to the getter:
     
 #### String resources and Localization:
     
-If you want to change the default strings in the header, just add the a new [strings.xml file](https://github.com/jeremiemartinez/RefreshListView/blob/master/library/res/values/strings.xml)
-and add the following resources:
+If you want to change the default strings in the header, just add the following resources into your strings.xml file and change the values:
 ``` xml
   <?xml version="1.0" encoding="utf-8"?>
   <resources>
