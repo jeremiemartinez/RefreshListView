@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.github.jeremiemartinez.refreshlistview.RefreshListView;
+import com.github.jeremiemartinez.refreshlistview.RefreshListView.OnRefreshListener;
+
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,8 +16,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-import fr.jmartinez.refreshlistview.RefreshListView;
-import fr.jmartinez.refreshlistview.RefreshListView.OnRefreshListener;
 
 public class MainMavenActivity extends Activity {
 

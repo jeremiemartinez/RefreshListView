@@ -13,8 +13,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-import fr.jmartinez.refreshlistview.RefreshListView;
-import fr.jmartinez.refreshlistview.RefreshListView.OnRefreshListener;
+
+import com.github.jeremiemartinez.refreshlistview.RefreshListView;
+import com.github.jeremiemartinez.refreshlistview.RefreshListView.OnRefreshListener;
 
 public class MainActivity extends Activity {
 

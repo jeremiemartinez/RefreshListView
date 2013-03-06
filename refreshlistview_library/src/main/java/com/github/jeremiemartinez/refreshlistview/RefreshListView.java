@@ -13,10 +13,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package fr.jmartinez.refreshlistview;
+package com.github.jeremiemartinez.refreshlistview;
 
 import java.text.DateFormat;
 import java.util.Date;
+
+import fr.jmartinez.refreshlistview.R;
 
 import android.content.Context;
 import android.util.AttributeSet;

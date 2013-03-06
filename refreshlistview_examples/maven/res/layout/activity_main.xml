@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <fr.jmartinez.refreshlistview.maven.RefreshListView
+    <com.github.jeremiemartinez.refreshlistview.RefreshListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
