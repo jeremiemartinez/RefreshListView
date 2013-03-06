@@ -12,7 +12,7 @@
 	<groupId>com.github.jeremiemartinez</groupId>
 	<artifactId>refreshlistview</artifactId>
 	<name>RefreshListView</name>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1</version>
 	<packaging>apklib</packaging>
 
 	<description>Simple Android ListView that enables pull to refresh as Twitter or Facebook apps ListView.</description>
@@ -22,7 +22,7 @@
 		<url>https://github.com/jeremiemartinez/RefreshListView</url>
 		<connection>scm:git:git@github.com:jeremiemartinez/RefreshListView.git</connection>
 		<developerConnection>scm:git:git@github.com:jeremiemartinez/RefreshListView.git</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>v1.1</tag>
   </scm>
 
 	<developers>
