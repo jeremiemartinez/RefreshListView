@@ -24,7 +24,7 @@ Then you need to go to Properties > Android in your project and add RefreshListV
    <groupId>com.github.jeremiemartinez</groupId>
    <artifactId>refreshlistview</artifactId>
    <type>apklib</type>
-   <version>1.1</version>
+   <version>1.2</version>
 </dependency>
 ```
 
