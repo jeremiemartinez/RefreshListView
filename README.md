@@ -2,7 +2,7 @@
 
 Simple Android ListView that enables pull to refresh as Twitter or Facebook apps ListView. Compatible with API 7 (Android 2.1).
 
-![RefreshListView Presentation](https://raw.github.com/jeremiemartinez/RefreshListView/master/images/presentation_listview.png)
+[![RefreshListView Presentation](raw/master/images/presentation_listview_small.png)](raw/master/images/presentation_listview.png)
 
 ## Usage
 
