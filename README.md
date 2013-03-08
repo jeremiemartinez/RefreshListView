@@ -33,7 +33,6 @@ Then you need to go to Properties > Android in your project and add RefreshListV
 #### Layout:
 
 ``` xml
-  <!-- Replace with your package name instead -->
   <com.github.jeremiemartinez.refreshlistview.RefreshListView
   android:id="@+id/list"
   android:layout_height="match_parent"
