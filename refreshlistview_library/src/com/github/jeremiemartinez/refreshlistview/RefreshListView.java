@@ -18,8 +18,6 @@ package com.github.jeremiemartinez.refreshlistview;
 import java.text.DateFormat;
 import java.util.Date;
 
-import com.github.jeremiemartinez.refreslistview.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -52,10 +50,6 @@ public class RefreshListView extends ListView {
 	private static final int RESISTANCE = 3;
 	private static final int HEADER_HEIGHT = 60;
 	private static final int DURATION = 300;
-	private static final String DEFAULT_UPDATING = "Updating...";
-	private static final String DEFAULT_RELEASE = "Release to refresh...";
-	private static final String DEFAULT_PULLDOWN = "Pull down to refresh...";
-	private static final String NO_UPDATE = "No past update";
 
 	private OnRefreshListener refreshListener;
 	private View container;
@@ -123,7 +117,7 @@ public class RefreshListView extends ListView {
 		headerHeight = (int) (HEADER_HEIGHT * getContext().getResources().getDisplayMetrics().density);
 		changeHeaderHeight(0);
 
-		comment.setText(getResourceString(R.string.refreshlistview_pulldown, DEFAULT_PULLDOWN));
+		comment.setText(getResources().getString(R.string.refreshlistview_pulldown));
 		currentState = State.PULLDOWN;
 	}
 
@@ -203,7 +197,7 @@ public class RefreshListView extends ListView {
 		arrow.clearAnimation();
 		arrow.setVisibility(View.INVISIBLE);
 		progress.setVisibility(View.VISIBLE);
-		comment.setText(getResourceString(R.string.refreshlistview_updating, DEFAULT_UPDATING));
+		comment.setText(getResources().getString(R.string.refreshlistview_updating));
 
 		if (refreshListener != null) {
 			refreshListener.onRefresh(this);
@@ -234,7 +228,7 @@ public class RefreshListView extends ListView {
 		else
 			lastUpdateDate = updateDate;
 		date.setText(getFormattedDate(lastUpdateDate));
-		comment.setText(getResourceString(R.string.refreshlistview_pulldown, DEFAULT_PULLDOWN));
+		comment.setText(getResources().getString(R.string.refreshlistview_pulldown));
 		currentState = State.PULLDOWN;
 		invalidate();
 	}
@@ -260,11 +254,11 @@ public class RefreshListView extends ListView {
 		if (currentState != State.UPDATING) {
 			if (height > headerHeight && currentState == State.PULLDOWN) {
 				arrow.startAnimation(getRotationAnimation(Rotation.ANTICLOCKWISE));
-				comment.setText(getResourceString(R.string.refreshlistview_release, DEFAULT_RELEASE));
+				comment.setText(getResources().getString(R.string.refreshlistview_release));
 				currentState = State.RELEASE;
 			} else if (height < headerHeight && currentState == State.RELEASE) {
 				arrow.startAnimation(getRotationAnimation(Rotation.CLOCKWISE));
-				comment.setText(getResourceString(R.string.refreshlistview_pulldown, DEFAULT_PULLDOWN));
+				comment.setText(getResources().getString(R.string.refreshlistview_pulldown));
 				currentState = State.PULLDOWN;
 			}
 		}
@@ -319,14 +313,6 @@ public class RefreshListView extends ListView {
 		}
 	}
 
-	private String getResourceString(int id, String defaultString) {
-		String resourceString = getContext().getString(id);
-		if (resourceString == null)
-			return defaultString;
-		else
-			return resourceString;
-	}
-
 	/**
 	 * Getter to know if date is enabled
 	 * 
@@ -353,7 +339,7 @@ public class RefreshListView extends ListView {
 			if (firstDate != null) {
 				date.setText(getFormattedDate(firstDate));
 			} else {
-				date.setText(NO_UPDATE);
+				date.setText(getResources().getString(R.string.refreshlistview_no_update));
 			}
 		} else {
 			date.setVisibility(View.GONE);

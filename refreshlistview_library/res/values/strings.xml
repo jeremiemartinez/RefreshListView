@@ -5,5 +5,6 @@
     <string name="refreshlistview_updating">Updating…</string>
     <string name="refreshlistview_release">Release to refresh…</string>
     <string name="refreshlistview_pulldown">Pull down to refresh…</string>
+    <string name="refreshlistview_no_update">"No past update"</string>
 
 </resources>
