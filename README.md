@@ -124,6 +124,39 @@ Finally add the strings as before:
         
     </resources>
 ```
+
+#### Customizing styles
+
+If you want to customize the style of the header, you can overload the following styles in your styles.xml, so your styles will be used instead of ours:
+``` xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="refreshlistview_container">
+        [...]
+    </style>
+
+    <style name="refreshlistview_arrow">
+        [...]
+    </style>
+    
+    <style name="refreshlistview_progress">
+        [...]
+    </style>
+
+    <style name="refreshlistview_comment">
+        [...]
+    </style>
+
+    <style name="refreshlistview_date">
+        [...]
+    </style>
+
+    <style name="refreshlistview_header">
+        [...]
+    </style>
+```
+</resources>
     
 #### Simple error handling:
     
