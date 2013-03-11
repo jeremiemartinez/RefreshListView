@@ -5,24 +5,16 @@
 
     <RelativeLayout
         android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp" >
+        style="@style/refreshlistview_header" >
 
         <ImageView
             android:id="@+id/arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:src="@drawable/refreshlistview_arrow" 
-            android:contentDescription="@string/refreshlistview_arrow"/>
+            style="@style/refreshlistview_arrow"
+            android:contentDescription="@string/refreshlistview_arrow" />
 
         <ProgressBar
             android:id="@+id/progress"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="25dp"
+            style="@style/refreshlistview_progress"
             android:visibility="invisible" />
 
         <RelativeLayout
@@ -32,18 +24,13 @@
 
             <TextView
                 android:id="@+id/comment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="14sp" />
+                style="@style/refreshlistview_comment"
+                android:textIsSelectable="false" />
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/comment"
-                android:gravity="center"
-                android:textSize="12sp"
+                style="@style/refreshlistview_date"
+                android:layout_below="@id/comment"
                 android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>

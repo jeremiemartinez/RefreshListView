@@ -35,6 +35,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.jeremiemartinez.refreslistview.R;
+
 /**
  * @author jmartinez
  * 
