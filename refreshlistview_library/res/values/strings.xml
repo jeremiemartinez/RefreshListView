@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="refreshlistview_arrow">Content Description Arrow</string>
     <string name="refreshlistview_updating">Updating…</string>
     <string name="refreshlistview_release">Release to refresh…</string>
     <string name="refreshlistview_pulldown">Pull down to refresh…</string>
