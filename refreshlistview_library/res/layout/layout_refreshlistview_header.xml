@@ -24,8 +24,7 @@
 
             <TextView
                 android:id="@+id/comment"
-                style="@style/refreshlistview_comment"
-                android:textIsSelectable="false" />
+                style="@style/refreshlistview_comment" />
 
             <TextView
                 android:id="@+id/date"
