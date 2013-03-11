@@ -4,4 +4,12 @@
 
     <style name="AppTheme" parent="AppBaseTheme" />
 
+    <style name="refreshlistview_header">
+        <item name="android:background">@android:color/holo_green_dark</item>
+    </style>
+
+    <style name="refreshlistview_container">
+        <item name="android:background">@android:color/holo_green_dark</item>
+    </style>
+
 </resources>

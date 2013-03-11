@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="7"
+        android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <application
@@ -14,7 +14,7 @@
         android:label="RefreshListView-Maven"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="fr.jmartinez.refreshlistview.maven.MainActivity"
+            android:name="fr.jmartinez.refreshlistview.maven.MainMavenActivity"
             android:label="RefreshListView" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
