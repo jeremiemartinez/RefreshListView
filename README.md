@@ -13,7 +13,7 @@ If you need more technical information, you can refer to the javadoc I wrote in 
 ### How to integrate it ?
 
 #### Eclipse
-Since RefreshListView is an apklib, you have to [download it](https://github.com/jeremiemartinez/RefreshListView/archive/master.zip) and import it in your Eclipse.
+Since RefreshListView is an apklib, you have to [download it](https://github.com/jeremiemartinez/RefreshListView/archive/master.zip) and import the **refreshlistview_library** folder in your Eclipse.
 
 Then you need to go to Properties > Android in your project and add RefreshListView as a Library.
 
