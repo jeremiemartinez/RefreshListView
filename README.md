@@ -155,8 +155,10 @@ If you want to customize the style of the header, you can overload the following
     <style name="refreshlistview_header">
         [...]
     </style>
-```
+
 </resources>
+
+```
     
 #### Simple error handling:
     
