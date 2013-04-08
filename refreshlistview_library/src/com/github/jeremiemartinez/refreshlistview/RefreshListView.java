@@ -168,8 +168,6 @@ public class RefreshListView extends ListView {
 			} else {
 				header.startAnimation(new ResizeHeaderAnimation(headerHeight));
 			}
-		case MotionEvent.ACTION_MOVE:
-			ev.setAction(MotionEvent.ACTION_CANCEL);
 		}
 		return super.onTouchEvent(ev);
 	}
