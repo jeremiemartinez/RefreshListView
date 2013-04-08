@@ -40,11 +40,8 @@ import com.github.jeremiemartinez.refreslistview.R;
 /**
  * @author jmartinez
  * 
- *         Simple Android ListView that enables pull to refresh as Twitter or Facebook apps
- *         ListView. Developers must implement OnRefreshListener interface and set it to the list.
- *         They also have to call finishRefreshing when their task is done. See 
- *         <a href="https://github.com/jeremiemartinez/RefreshListView">Project Site</a> for more
- *         information.
+ *         Simple Android ListView that enables pull to refresh as Twitter or Facebook apps ListView. Developers must implement OnRefreshListener interface and set it to the list. They also have to
+ *         call finishRefreshing when their task is done. See <a href="https://github.com/jeremiemartinez/RefreshListView">Project Site</a> for more information.
  * 
  */
 public class RefreshListView extends ListView {
@@ -174,7 +171,7 @@ public class RefreshListView extends ListView {
 		case MotionEvent.ACTION_MOVE:
 			ev.setAction(MotionEvent.ACTION_CANCEL);
 		}
-		return true;
+		return super.onTouchEvent(ev);
 	}
 
 	/**
@@ -236,8 +233,7 @@ public class RefreshListView extends ListView {
 	}
 
 	/**
-	 * Change the header height while scrolling down by making it visible and increasing
-	 * topMargin of the header.
+	 * Change the header height while scrolling down by making it visible and increasing topMargin of the header.
 	 * 
 	 * @param height
 	 *            the height of the header
@@ -366,8 +362,7 @@ public class RefreshListView extends ListView {
 	}
 
 	/**
-	 * Callback. Call when user asks to refresh the list. Required to be implemented 
-	 * by developer.
+	 * Callback. Call when user asks to refresh the list. Required to be implemented by developer.
 	 */
 	public interface OnRefreshListener {
 		public void onRefresh(RefreshListView listView);
@@ -400,8 +395,7 @@ public class RefreshListView extends ListView {
 		/**
 		 * Animation core, animate the height of the header to a specific value.
 		 * 
-		 * @see android.view.animation.Animation#applyTransformation(float, 
-		 * 			android.view.animation.Transformation)
+		 * @see android.view.animation.Animation#applyTransformation(float, android.view.animation.Transformation)
 		 */
 		@Override
 		protected void applyTransformation(float interpolatedTime, Transformation t) {
@@ -417,8 +411,7 @@ public class RefreshListView extends ListView {
 		/**
 		 * Used at the end of the animation to hide completely the header if it's required (toHeight == 0).
 		 * 
-		 * @see android.view.animation.Animation#getTransformation(long, 
-		 * 			android.view.animation.Transformation)
+		 * @see android.view.animation.Animation#getTransformation(long, android.view.animation.Transformation)
 		 */
 		@Override
 		public boolean getTransformation(long currentTime, Transformation outTransformation) {
