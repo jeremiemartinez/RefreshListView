@@ -427,4 +427,14 @@ public class RefreshListView extends ListView {
 	public void errorInRefresh(String errorMessage) {
 		Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
 	}
+
+	/**
+	 * Programmatically start updating
+	 */
+	public void AutomaticRefresh(){
+		
+		header.setVisibility(View.VISIBLE);
+		changeHeaderHeight(headerHeight);
+		startRefreshing();
+	}
 }
